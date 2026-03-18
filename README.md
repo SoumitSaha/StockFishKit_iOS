@@ -1,5 +1,16 @@
 # StockFishKit_iOS
 
+![Swift](https://img.shields.io/badge/Swift-5.9+-orange?style=flat-square&logo=swift)
+![Platform](https://img.shields.io/badge/platform-iOS%2014%2B-lightgrey?style=flat-square&logo=apple)
+![SPM](https://img.shields.io/badge/SPM-compatible-brightgreen?style=flat-square&logo=swift)
+![License](https://img.shields.io/badge/license-GPLv3-blue?style=flat-square)
+![Version](https://img.shields.io/github/v/tag/SoumitSaha/StockFishKit_iOS?label=version&style=flat-square&color=blue)
+![Stars](https://img.shields.io/github/stars/SoumitSaha/StockFishKit_iOS?style=flat-square)
+![Issues](https://img.shields.io/github/issues/SoumitSaha/StockFishKit_iOS?style=flat-square)
+![Stockfish](https://img.shields.io/badge/Stockfish-dev--20260318-green?style=flat-square)
+![NNUE](https://img.shields.io/badge/NNUE-enabled-purple?style=flat-square)
+![Architecture](https://img.shields.io/badge/arch-arm64-informational?style=flat-square)
+
 A Swift Package Manager (SPM) wrapper around the [Stockfish](https://stockfishchess.org) chess engine for iOS. This package exposes a clean Swift API over the Stockfish C++ engine, handles NNUE neural network loading, and manages the UCI communication protocol so you can integrate world-class chess analysis into any iOS app.
 
 ---

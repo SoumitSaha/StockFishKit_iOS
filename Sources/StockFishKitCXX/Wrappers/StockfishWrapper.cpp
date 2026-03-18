@@ -127,19 +127,9 @@ void stockfish_init(const char* nnue_path) {
 void stockfish_start_loop(void) {
     std::lock_guard<std::mutex> lock(g_state_mutex);
     if (g_running) return;
-    g_running = true;
-
     stockfish_output_callback_t cb = g_output_callback;
 
     std::thread([cb]() {
-
-//        printf(">>> engine thread: Bitboards::init()\n");
-//        fflush(stdout);
-//        Stockfish::Bitboards::init();
-//
-//        printf(">>> engine thread: Position::init()\n");
-//        fflush(stdout);
-//        Stockfish::Position::init();
 
         printf(">>> engine thread: creating UCIEngine\n");
         fflush(stdout);
@@ -172,10 +162,9 @@ void stockfish_start_loop(void) {
         g_old_cout = std::cout.rdbuf(g_out_buf);
         g_old_cin  = std::cin.rdbuf(g_cin_buf);
 
-        printf(">>> engine thread: streams redirected\n");
-        fflush(stdout);
+        // NOW set g_running — streams are ready, commands can be received
+        g_running = true;
 
-        // Inject full NNUE paths now that streams are redirected
         if (!evalFileArg.empty()) {
             g_cin_buf->add_cmd(evalFileArg);
             g_cin_buf->add_cmd(evalFileSmallArg);

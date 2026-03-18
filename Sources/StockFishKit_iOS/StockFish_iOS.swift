@@ -31,33 +31,52 @@ public final class StockFish_iOS: StockFish_iOSManaging {
     // MARK: - Public API
 
     public func initEngine() {
+        print(">>> initEngine called")
         stockfish_set_output_callback { cString in
             let message = String(cString: cString)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             guard !message.isEmpty else { return }
+            print(">>> RAW ENGINE OUTPUT: \(message)")
 
             Task { @MainActor in
                 let manager = StockFish_iOS.shared
-
                 if message == "readyok" {
                     manager.isEngineReady = true
                 }
-
                 manager.onMessageReceived?(message)
                 manager.delegate?.stockFish_iOSManager(manager, didReceiveMessage: message)
             }
         }
 
-        guard !stockfish_is_ready() else { return }
+        guard !stockfish_is_ready() else {
+            print(">>> Engine already running")
+            return
+        }
 
         let nnuePath = Bundle.module.path(
             forResource: "nn-9a0cc2a62c52",
             ofType: "nnue"
         )
+        print(">>> NNUE path: \(nnuePath ?? "NOT FOUND")")
 
         stockfish_init(nnuePath)
         stockfish_start_loop()
-        send("isready")
+
+        // Poll until engine thread has set up streams and g_running is true
+        waitForEngineReady()
+    }
+
+    private func waitForEngineReady() {
+        if stockfish_is_ready() {
+            print(">>> Engine ready, sending uci + isready")
+            send("uci")
+            send("isready")
+        } else {
+            // Check again in 100ms
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.waitForEngineReady()
+            }
+        }
     }
 
     public func findBestMove(fen: String, depth: Int = 30) {

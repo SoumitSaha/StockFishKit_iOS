@@ -1,0 +1,6 @@
+/* module.modulemap — StockFishKit_iOS SPM */
+
+module StockFishKitCXX {
+    header "StockfishWrapper.h"
+    export *
+}

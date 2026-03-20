@@ -69,7 +69,7 @@ public final class StockFish_iOS: StockFish_iOSManaging {
     private func waitForEngineReady() {
         if stockfish_is_ready() {
             send("uci")
-            send("setoption name MultiPV value 3")
+            send("setoption name MultiPV value 2")
             send("isready")
         } else {
             // Check again in 100ms

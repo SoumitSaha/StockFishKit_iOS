@@ -68,7 +68,13 @@ public final class StockFish_iOS: StockFish_iOSManaging {
 
     private func waitForEngineReady() {
         if stockfish_is_ready() {
+            let cores = ProcessInfo.processInfo.processorCount
+            // Use half the cores to balance performance and battery
+            let threads = max(1, cores / 2)
+            print(">>> Device cores: \(cores), using \(threads) threads")
+            
             send("uci")
+            send("setoption name Threads value \(threads)")
             send("setoption name MultiPV value 2")
             send("isready")
         } else {

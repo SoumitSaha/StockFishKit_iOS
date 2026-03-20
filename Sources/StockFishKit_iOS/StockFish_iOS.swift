@@ -68,8 +68,8 @@ public final class StockFish_iOS: StockFish_iOSManaging {
 
     private func waitForEngineReady() {
         if stockfish_is_ready() {
-            print(">>> Engine ready, sending uci + isready")
             send("uci")
+            send("setoption name MultiPV value 3")
             send("isready")
         } else {
             // Check again in 100ms
@@ -92,7 +92,7 @@ public final class StockFish_iOS: StockFish_iOSManaging {
         send("go depth \(depth)")
     }
 
-    public func findBestMove(moves: String, depth: Int = 30) {
+    public func findBestMove(moves: String, depth: Int = 50) {
         guard stockfish_is_ready(), isEngineReady else { return }
         send("isready")
         send("position startpos moves \(moves)")
